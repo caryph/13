@@ -1,0 +1,40 @@
+.osaka {
+    --bg: #00141a;
+    --text: #e9e0d2;
+    --url: #2aa198;
+    --url-hover: #b58900;
+
+    --super: #859900;
+    --super-hover: #b58900;
+}
+
+:root {
+    --bg: #54142a;
+    --text: #e9e0d2;
+    --url: #f19a9e;
+    --url-hover: #eabab2;
+
+    --super: #8ddbbd;
+    --super-hover: #bcead8;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: geist;
+}
+
+a { color: var(--url); text-decoration: none; }
+a:hover { color: var(--url-hover); text-decoration: underline dashed; }
+.logo { font-size: 2.2em; margin-bottom: 0.2em; }
+.header { align-items: baseline; display: flex; justify-content: space-between; }
+.muted { color: var(--muted); }
+
+.nav { display: inline-flex; gap: 1em; }
+.nav a { color: var(--super); }
+.nav a:hover { color: var(--super-hover); }
+
+@font-face {
+  font-family: geist;
+  src: url("fonts/GeistMono-Medium.ttf");
+}

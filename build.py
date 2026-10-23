@@ -8,7 +8,7 @@ _TEMPLATES = {
 }
 
 _DIR_IN = "content"
-_DIR_OUT = "public"
+_DIR_OUT = "_public"
 _DIR_STATIC = "static"
 _DIR_TEMPLATES = "templates"
 
@@ -32,8 +32,17 @@ def read_template(name: str):
         return Path(_DIR_TEMPLATES, name).read_text()
     except FileNotFoundError:
         raise BuildError(f"{p}: template '{name}' file missing")
-    
 
+def write_page(path: str, html: str, meta: dict):
+    html = read_template("base").replace("%content%", html)
+    for k, v in meta.items():
+        html = html.replace(f"%{k}%", str(v))
+
+    out = output / "index.html" if path == "index" else output / path / "index.html"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(html, encoding="utf-8")
+    return meta
+    
 def process_file(p: Path):
     content = p.read_text(encoding="utf-8")
     try:
@@ -50,20 +59,15 @@ def process_file(p: Path):
     template = meta.get('template') or fetch_template(p)
     if template:
         html = read_template(template).replace("%content%", html)
-    html = read_template("base").replace("%content%", html)
-    for k, v in meta.items():
-        html = html.replace(f"%{k}%", str(v))
 
-    try:
-        path = Path(meta['path'])
-    except KeyError:
+    if "path" not in meta:
         raise BuildError(f"{p}: must specify 'path' in header")
+    
+    return write_page(str(meta["path"]), html, meta)
 
-    public_path = Path(output, f"{path}.html")
-    public_path.parent.mkdir(parents=True, exist_ok=True)
-    public_path.write_text(html)
-    return meta
-
+def generate_note_list(notes: list):
+    rows = "\n".join(f'<time class="muted">{n["date"]}</time> <a href="/{n['path']}/">{n['title']}</a>' for n in notes)
+    return f"<p>{rows}</p>"
 
 
 if output.exists():
@@ -71,7 +75,15 @@ if output.exists():
 
 copytree(_DIR_STATIC, output, dirs_exist_ok=True)
 
+notes = []
 for p in root.rglob("*.md"):
     if p.is_symlink() or p.is_dir():
         continue
     entry = process_file(p)
+    if p.parent == root / "n":
+        if "date" not in entry:
+            raise BuildError(f"{p}: 'date' header missing")
+        notes.append(entry)
+
+    notes.sort(key=lambda n: n["date"], reverse=True)
+    write_page("n", generate_note_list(notes), {"title": "notes"})
