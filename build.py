@@ -4,7 +4,7 @@ import yaml
 import markdown
 
 _TEMPLATES = {
-    "notes": "post.html"
+    "n": "post.html"
 }
 
 _DIR_IN = "content"
@@ -66,8 +66,8 @@ def process_file(p: Path):
     return write_page(str(meta["path"]), html, meta)
 
 def generate_note_list(notes: list):
-    rows = "\n".join(f'<time class="muted">{n["date"]}</time> <a href="/{n['path']}/">{n['title']}</a>' for n in notes)
-    return f"<p>{rows}</p>"
+    rows = "\n".join(f'<li><time class="muted">{n["date"]}</time> <a href="/{n['path']}/">{n['title']}</a></li>' for n in notes)
+    return f'<ul class="note-list">{rows}</ul>'
 
 
 if output.exists():
@@ -75,12 +75,16 @@ if output.exists():
 
 copytree(_DIR_STATIC, output, dirs_exist_ok=True)
 
+def is_note(p: Path):
+    parts = p.relative_to(root).parts
+    return len(parts) > 1 and parts[0] == "n"
+
 notes = []
 for p in root.rglob("*.md"):
     if p.is_symlink() or p.is_dir():
         continue
     entry = process_file(p)
-    if p.parent == root / "n":
+    if is_note(p):
         if "date" not in entry:
             raise BuildError(f"{p}: 'date' header missing")
         notes.append(entry)

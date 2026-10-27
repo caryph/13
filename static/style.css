@@ -1,6 +1,6 @@
 .osaka {
     --bg: #00141a;
-    --text: #e9e0d2;
+    --text: #e7d8bf;
     --url: #2aa198;
     --url-hover: #b58900;
 
@@ -10,12 +10,13 @@
 
 :root {
     --bg: #54142a;
-    --text: #e9e0d2;
+    --text: #e7ded0;
+    --muted: #cbc2b4;
     --url: #f19a9e;
-    --url-hover: #eabab2;
+    --url-hover: #ffd9d6;
 
     --super: #8ddbbd;
-    --super-hover: #bcead8;
+    --super-hover: #dcfff2;
 }
 
 body {
@@ -33,6 +34,9 @@ a:hover { color: var(--url-hover); text-decoration: underline dashed; }
 .nav { display: inline-flex; gap: 1em; }
 .nav a { color: var(--super); }
 .nav a:hover { color: var(--super-hover); }
+
+.note-list { list-style: none; padding: 0; margin: 0; }
+
 
 @font-face {
   font-family: geist;
