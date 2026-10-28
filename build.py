@@ -3,14 +3,8 @@ from shutil import rmtree, copytree
 import yaml
 import markdown
 
-_TEMPLATES = {
-    "n": "post.html"
-}
-
-_DIR_IN = "content"
-_DIR_OUT = "_public"
-_DIR_STATIC = "static"
-_DIR_TEMPLATES = "templates"
+from common import _DIR_IN, _DIR_OUT, _DIR_STATIC, _DIR_TEMPLATES, _TEMPLATES
+from rss import update_feed
 
 root = Path(_DIR_IN)
 output = Path(_DIR_OUT)
@@ -56,6 +50,7 @@ def process_file(p: Path):
         meta['path'] = "index"
 
     html = markdown.markdown(body)
+    meta['_html'] = html
     template = meta.get('template') or fetch_template(p)
     if template:
         html = read_template(template).replace("%content%", html)
@@ -91,3 +86,4 @@ for p in root.rglob("*.md"):
 
     notes.sort(key=lambda n: n["date"], reverse=True)
     write_page("n", generate_note_list(notes), {"title": "notes"})
+    update_feed(notes)
