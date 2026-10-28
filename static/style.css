@@ -1,13 +1,3 @@
-.osaka {
-    --bg: #00141a;
-    --text: #e7d8bf;
-    --url: #2aa198;
-    --url-hover: #b58900;
-
-    --super: #859900;
-    --super-hover: #b58900;
-}
-
 :root {
     --bg: #54142a;
     --text: #e7ded0;
@@ -22,12 +12,35 @@
 body {
     background-color: var(--bg);
     color: var(--text);
-    font-family: geist;
+    font-family: geist, monospace;
+    line-height: 1.5;
+    font-weight: 450;
+    margin: 0;
+    overflow-wrap: break-word;
 }
+
+blockquote {
+    margin: 1.5em 0;
+    padding-left: 1.2em;
+    font-style: italic;
+    border-left: 2px solid var(--muted);
+    color: var(--muted);
+}
+
+.logo { font-size: 2.2em; margin-bottom: 0.2em; }
+.logo b {
+    display: inline-block;
+    width: 0.45em;
+    height: 0.45em;
+    margin-right: 0.15em;
+    background: currentColor;
+}
+
 
 a { color: var(--url); text-decoration: none; }
 a:hover { color: var(--url-hover); text-decoration: underline dashed; }
-.logo { font-size: 2.2em; margin-bottom: 0.2em; }
+h3 { margin-bottom: 0.4em; font-weight: 600; }
+
 .header { align-items: baseline; display: flex; justify-content: space-between; }
 .muted { color: var(--muted); }
 
@@ -36,9 +49,21 @@ a:hover { color: var(--url-hover); text-decoration: underline dashed; }
 .nav a:hover { color: var(--super-hover); }
 
 .note-list { list-style: none; padding: 0; margin: 0; }
+.page { max-width: 36rem; margin: 0 auto; padding: 1.5rem 1rem; }
 
 
 @font-face {
   font-family: geist;
-  src: url("fonts/GeistMono-Medium.ttf");
+   src: url("fonts/GeistMono-VariableFont_wght.ttf");
+   font-weight: 100 900;
+   font-style: normal;
+   font-display: swap;
+}
+
+@font-face {
+    font-family: geist;
+    src: url("fonts/GeistMono-Italic-VariableFont_wght.ttf");
+    font-weight: 100 900;
+    font-style: italic;
+    font-display: swap;
 }

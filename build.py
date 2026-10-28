@@ -25,7 +25,7 @@ def read_template(name: str):
     try:
         return Path(_DIR_TEMPLATES, name).read_text()
     except FileNotFoundError:
-        raise BuildError(f"{p}: template '{name}' file missing")
+        raise BuildError(f"template '{name}' file missing")
 
 def write_page(path: str, html: str, meta: dict):
     html = read_template("base").replace("%content%", html)
@@ -84,6 +84,6 @@ for p in root.rglob("*.md"):
             raise BuildError(f"{p}: 'date' header missing")
         notes.append(entry)
 
-    notes.sort(key=lambda n: n["date"], reverse=True)
-    write_page("n", generate_note_list(notes), {"title": "notes"})
-    update_feed(notes)
+notes.sort(key=lambda n: n["date"], reverse=True)
+write_page("n", generate_note_list(notes), {"title": "notes"})
+update_feed(notes)
