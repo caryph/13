@@ -27,6 +27,18 @@ blockquote {
     color: var(--muted);
 }
 
+table {
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    display: block;
+    overflow-x: auto;
+}
+
+th, td { padding: 0.3em 0.8em; text-align: left; }
+td { border-top: 1px solid var(--muted); }
+th + th, td + td { border-left: 1px solid var(--muted); }
+th {font-weight: 600; }
+
 .logo { font-size: 2.2em; margin-bottom: 0.2em; }
 .logo b {
     display: inline-block;

@@ -61,7 +61,7 @@ def process_file(p: Path):
     return write_page(str(meta["path"]), html, meta)
 
 def generate_note_list(notes: list):
-    rows = "\n".join(f'<li><time class="muted">{n["date"]}</time> <a href="/{n['path']}/">{n['title']}</a></li>' for n in notes)
+    rows = "\n".join(f'<li><time class="muted">{n["date"]}</time> <a href="/{n["path"]}/">{n["title"]}</a></li>' for n in notes)
     return f'<ul class="note-list">{rows}</ul>'
 
 
