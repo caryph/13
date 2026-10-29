@@ -49,7 +49,7 @@ def process_file(p: Path):
     if 'path' not in meta and p.name == "index.md":
         meta['path'] = "index"
 
-    html = markdown.markdown(body)
+    html = markdown.markdown(body, extensions=["tables"])
     meta['_html'] = html
     template = meta.get('template') or fetch_template(p)
     if template:
