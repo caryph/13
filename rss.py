@@ -1,17 +1,15 @@
-from datetime import datetime, timezone, time, date
-from common import _DIR_OUT, _DOMAIN, _AUTHOR
+from datetime import datetime, timezone, time, timedelta
+from common import _DIR_OUT, _DOMAIN, _AUTHOR, _DATE_FORMAT, _TIMEZONE
 from html import escape
 
 _BASE_URL = "https://" + _DOMAIN
 
-def get_time(d: str | date | None = None):
+def get_time(d: str | None = None):
     if d is None:
         dt = datetime.now(timezone.utc)
     else:
-        if isinstance(d, str):
-            d = date.fromisoformat(d)
-        dt = datetime.combine(d, time(0, 0), tzinfo=timezone.utc)
-    return dt.strftime("%Y-%m-%dT%H:%M:%SZ")
+        dt = datetime.strptime(d, _DATE_FORMAT).replace(tzinfo=timezone(timedelta(hours=_TIMEZONE)))
+    return dt.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 def format_entry(meta: dict):
     url = f"{_BASE_URL}/{meta['path']}"
@@ -25,7 +23,7 @@ def format_entry(meta: dict):
     """
 
 def get_feed(notes: list):
-    entries = "\n".join(format_entry(i) for i in notes)
+    entries = "\n".join(format_entry(meta) for meta in notes if meta.get('title'))
     return f"""<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <title>13m</title>
