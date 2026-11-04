@@ -1,11 +1,12 @@
 from pathlib import Path
 from shutil import rmtree, copytree
+from html import escape
 import yaml
 import markdown
 
 from common import BuildError, _DIR_IN, _DIR_OUT, _DIR_STATIC, _DIR_TEMPLATES
 from wall import is_on_wall, preprocess_wall_post, generate_wall, excerpt
-from rss import update_feed
+from rss import update_feeds
 
 root = Path(_DIR_IN)
 output = Path(_DIR_OUT)
@@ -62,8 +63,10 @@ def process_file(p: Path):
         raise BuildError(f"{p}: must specify 'path' in header")
 
     page = dict(meta)
+    page['description'] = escape(excerpt(meta["_html"])[0])
     if not page.get('title'):
-        page['title'] = excerpt(meta['_html'])[0]
+        page['title'] = excerpt(meta['_html'], 40)[0]
+    page['title'] = escape(str(page['title']))
     
     write_page(str(meta["path"]), html, page, p)
     return meta
@@ -82,5 +85,5 @@ for p in root.rglob("*.md"):
         wall.append(meta)
 
 wall.sort(key=lambda n: n["date"], reverse=True)
-write_page("w", generate_wall(wall), {"title": "wall"}, "wall page")
-update_feed(wall)
+write_page("w", generate_wall(wall), {"title": "wall", "description": "complete post wall"}, "wall page")
+update_feeds(wall)

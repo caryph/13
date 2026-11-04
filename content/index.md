@@ -5,4 +5,4 @@ helloo! you might know me under [trash](https://youtube.com/@thetrashcell) or [k
 
 i'm a computer enthusiast, occasional content maker, ex discord partner, maybe composer or game designer even, i guess!
 
-subscribe to [my feed](/feed.xml) and feel free to contact me via discord (at) thetrashcell
+[follow along](/feeds) my posts via RSS (or your preferred way) :D
