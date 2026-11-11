@@ -21,8 +21,13 @@ def read_template(name: str):
 
 _written = {}
 
+def apply_embed(html: str, which: str):
+    return html.replace("%embed%", read_template("embed/" + which))
+
 def write_page(path: str, html: str, meta: dict, src: str | None = None):
     html = read_template("base").replace("%content%", html)
+    html = apply_embed(html, "small" if meta.get("template") == "note" else "full")
+    
     for k, v in meta.items():
         html = html.replace(f"%{k}%", str(v))
 

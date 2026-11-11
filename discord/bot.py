@@ -1,7 +1,7 @@
 import json
 import sys
 import yaml
-from urllib.request import Request, urlopen
+from urllib.request import Request, urlopen, HTTPError
 from xml.etree import ElementTree
 from pathlib import Path
 
@@ -31,8 +31,12 @@ def send(path: str, body: dict):
             "User-Agent": f"DiscordBot ({_SITE}, 1.0)"
         }
     )
-    with urlopen(request, timeout=10) as response:
-        return json.load(response)
+    try:
+        with urlopen(request, timeout=10) as response:
+            return json.load(response)
+    except HTTPError as e:
+        print(e.code, e.read())
+        raise
 
 
 articles = read_feed("feed.xml")
