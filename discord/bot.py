@@ -51,7 +51,7 @@ for url, title in reversed(everything.items()):
         print("would send:", ping, url)
         continue
 
-    msg = send("messages", {"content": f"{ping} {url}"})
+    msg = send("messages", {"content": f"{url} {ping}"})
 
     with sent.open("a") as f:
         f.write(url + "\n")

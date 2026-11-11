@@ -10,4 +10,4 @@ title: feeds
 
 <h3>elsewhere</h3>
 
-[discord](https://discord.gg/uyddWrKfA6) >> discord syndication!
+[/discord](https://discord.gg/uyddWrKfA6) >> get notified via a discord webhook!
