@@ -1,5 +1,5 @@
 from pathlib import Path
-from shutil import rmtree, copytree
+from shutil import rmtree, copytree, copy
 from html import escape
 import yaml
 import markdown
@@ -35,7 +35,12 @@ def write_page(path: str, html: str, meta: dict, src: str | None = None):
 
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(html, encoding="utf-8")
-        
+
+def copy_misc(p: Path, meta: dict):
+    out = output if meta["path"] == "index" else output / str(meta['path'])
+    for f in p.parent.iterdir():
+        if f.is_file() and f.suffix != ".md" and not f.name.startswith("."):
+            copy(f, out / f.name)
 
 def process_file(p: Path):
     content = p.read_text(encoding="utf-8")
@@ -69,6 +74,7 @@ def process_file(p: Path):
     page['title'] = escape(str(page['title']))
     
     write_page(str(meta["path"]), html, page, p)
+    copy_misc(p, meta)
     return meta
 
 if output.exists():

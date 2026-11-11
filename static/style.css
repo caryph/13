@@ -52,6 +52,7 @@ th {font-weight: 600; }
 a { color: var(--url); text-decoration: none; }
 a:hover { color: var(--url-hover); text-decoration: underline dashed; }
 h3 { margin-bottom: 0.4em; font-weight: 600; }
+img { max-width: 100%; height: auto; }
 
 .header { align-items: baseline; display: flex; justify-content: space-between; }
 .muted { color: var(--muted); }
