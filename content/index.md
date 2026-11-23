@@ -1,4 +1,5 @@
 ---
+template: base
 title: home
 ---
 helloo! you might know me under [trash](https://youtube.com/@thetrashcell) or [kvellc](https://kvellc.bandcamp.com) or [caryph](https://github.com/caryph) or whatever

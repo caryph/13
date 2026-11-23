@@ -35,7 +35,6 @@ def preprocess_wall_post(p: Path, meta: dict):
         meta['path'] = d.replace("@", "/").replace(":", "")
 
     meta['day'] = d.split("@")[0]
-    meta.setdefault('template', 'post' if meta.get('title') else 'note')
 
 
 def generate_wall(log: list):

@@ -11,21 +11,28 @@ from rss import update_feeds
 root = Path(_DIR_IN)
 output = Path(_DIR_OUT)
 
+_written = {}
+
 def read_template(name: str):
     if not name.endswith(".html"):
         name += ".html"
     try:
-        return Path(_DIR_TEMPLATES, name).read_text()
+        content = Path(_DIR_TEMPLATES, name).read_text()
     except FileNotFoundError:
         raise BuildError(f"template '{name}' file missing")
 
-_written = {}
+    first_line, _, rest = content.partition("\n")
+    if first_line.startswith("<!-- extends:") and first_line.endswith("-->"):
+        parent_name = first_line.removeprefix("<!-- extends:").removesuffix("-->").strip()
+        return read_template(parent_name).replace("%content%", rest)
+    return content
+
 
 def apply_embed(html: str, which: str):
     return html.replace("%embed%", read_template("embed/" + which))
 
 def write_page(path: str, html: str, meta: dict, src: str | None = None):
-    html = read_template("base").replace("%content%", html)
+    html = read_template(meta['template']).replace("%content%", html)
     html = apply_embed(html, "small" if meta.get("template") == "note" else "full")
     
     for k, v in meta.items():
@@ -65,10 +72,8 @@ def process_file(p: Path):
     html = markdown.markdown(body, extensions=["tables"])
     meta['_html'] = html
 
-    template = meta.get('template')
-    if template:
-        html = read_template(template).replace("%content%", html)
-
+    if "template" not in meta:
+        raise BuildError(f"{p}: must specify 'template' in header")
     if "path" not in meta:
         raise BuildError(f"{p}: must specify 'path' in header")
 
@@ -96,5 +101,5 @@ for p in root.rglob("*.md"):
         wall.append(meta)
 
 wall.sort(key=lambda n: n["date"], reverse=True)
-write_page("w", generate_wall(wall), {"title": "wall", "description": "complete post wall"}, "wall page")
+write_page("w", generate_wall(wall), {"title": "wall", "description": "complete post wall", "template": "base"}, "wall page")
 update_feeds(wall)

@@ -1,4 +1,5 @@
 ---
+template: base
 path: contact
 title: contact
 ---

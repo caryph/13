@@ -1,4 +1,5 @@
 ---
+template: base
 path: feeds
 title: feeds
 ---

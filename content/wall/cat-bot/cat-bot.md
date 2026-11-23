@@ -1,4 +1,5 @@
 ---
+template: post
 title: history of staring cat
 date: 2026-11-23@16:26
 path: cat

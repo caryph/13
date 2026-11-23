@@ -1,4 +1,5 @@
 ---
+template: post
 title: infoshapes
 date: 2026-10-29@15:00
 path: is
